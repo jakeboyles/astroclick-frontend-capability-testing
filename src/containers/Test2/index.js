@@ -3,17 +3,31 @@ import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 
-import { counterUp, counterDown } from '../../actions/CounterActions';
+import { counterUp, counterDown, counterReset } from '../../actions/CounterActions';
+import { addCategory, removeCategory } from '../../actions/CategoryActions';
 
 class Test2 extends React.Component {
   constructor(props){
     super(props);
+    this.removeCategory = this.removeCategory.bind(this);
   }
   submitCategoryForm(event) {
     event.preventDefault();
-    console.log(event.target.name.value);
+    let data = {
+      category:event.target.name.value,
+    }
+    this._inputElement.value = "";
+    this.props.sendEvent(data);
+    this._inputElement.focus();
+  }
+  removeCategory(index) {
+    let data = {
+      index:Number(index.target.dataset.key),
+    }
+    this.props.removeEvent(data);
   }
   render () {
+    const _this = this;
     return (
       <div>
         <h2>Test 2 - Using Redux</h2>
@@ -30,7 +44,7 @@ class Test2 extends React.Component {
           <span>
             <label>Counter Controls &nbsp;</label>
             <button onClick={this.props.down.bind(this)}>-</button>
-            <button>RESET</button>
+            <button onClick={this.props.reset.bind()}>RESET</button>
             <button onClick={this.props.up.bind(this)}>+</button>
           </span>
           <h4>Count: {this.props.counter}</h4>
@@ -46,11 +60,11 @@ class Test2 extends React.Component {
           <br />
           <h4>Categories: </h4>
           {this.props.categories.map((cat, i) => {
-            return <p key={i}> - {cat}</p>
+            return <p onClick={_this.removeCategory} data-key={i} key={i}> - {cat}</p>
           })}
           <div>
             <form onSubmit={this.submitCategoryForm.bind(this)}>
-              <input type="text" name="name" />
+              <input ref={(a) => this._inputElement = a} type="text" name="name" />
               <button type="submit">Submit</button>
             </form>
           </div>
@@ -61,7 +75,7 @@ class Test2 extends React.Component {
 }
 
 Test2.propTypes = {
-
+  categories: React.PropTypes.array,
 };
 
 Test2.defaultProps = {
@@ -75,6 +89,9 @@ export default connect(
   }),
   (dispatch) => ({
     up: () => dispatch(counterUp()),
-    down: () => dispatch(counterDown())
+    down: () => dispatch(counterDown()),
+    reset: () => dispatch(counterReset()),
+    sendEvent:(data) => dispatch(addCategory(data)),
+    removeEvent:(index) => dispatch(removeCategory(index)),
   })
 )(Test2);

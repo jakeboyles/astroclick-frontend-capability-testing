@@ -9,4 +9,9 @@ module.exports = {
       type: 'INCREASE_COUNTER'
     };
   },
+  counterReset: () => {
+    return {
+      type: 'RESET_COUNTER'
+    };
+  },
 };
