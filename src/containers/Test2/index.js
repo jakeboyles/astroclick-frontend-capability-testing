@@ -2,7 +2,6 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-
 import { counterUp, counterDown, counterReset } from '../../actions/CounterActions';
 import { addCategory, removeCategory } from '../../actions/CategoryActions';
 
@@ -13,18 +12,19 @@ class Test2 extends React.Component {
   }
   submitCategoryForm(event) {
     event.preventDefault();
-    let data = {
+    const data = {
       category:event.target.name.value,
     }
     this._inputElement.value = "";
     this.props.sendEvent(data);
     this._inputElement.focus();
   }
-  removeCategory(index) {
-    let data = {
-      index:Number(index.target.dataset.key),
+  removeCategory(event) {
+    const data = {
+      index:Number(event.target.dataset.key),
     }
     this.props.removeEvent(data);
+    this._inputElement.focus();
   }
   render () {
     const _this = this;
