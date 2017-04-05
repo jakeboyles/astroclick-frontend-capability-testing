@@ -17,14 +17,14 @@ class Earthquakes extends React.Component {
 
   componentDidMount() {
     axios.get(`https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson`)
-      .then(res => {
-        const quakes = res.data.features;
-        this.setState({ quakes });
-      })
-      .catch(function (error) {
-        console.log(error);
-        alert(error);
-      });
+    .then(res => {
+      const quakes = res.data.features;
+      this.setState({ quakes });
+    })
+    .catch(function (error) {
+      console.log(error);
+      alert(error);
+    });
   }
 
   render () {

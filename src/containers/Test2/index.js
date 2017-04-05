@@ -8,7 +8,6 @@ import { addCategory, removeCategory } from '../../actions/CategoryActions';
 class Test2 extends React.Component {
   constructor(props){
     super(props);
-    this.removeCategory = this.removeCategory.bind(this);
   }
   submitCategoryForm(event) {
     event.preventDefault();
@@ -19,9 +18,9 @@ class Test2 extends React.Component {
     this.props.sendEvent(data);
     this._inputElement.focus();
   }
-  removeCategory(event) {
+  removeCategory(id) {
     const data = {
-      index:Number(event.target.dataset.key),
+      index:Number(id),
     }
     this.props.removeEvent(data);
     this._inputElement.focus();
@@ -60,8 +59,9 @@ class Test2 extends React.Component {
           <br />
           <h4>Categories: </h4>
           {this.props.categories.map((cat, i) => {
-            return <p onClick={_this.removeCategory} data-key={i} key={i}> - {cat}</p>
+            return <p onClick={this.removeCategory.bind(this,i)} key={i}> - {cat}</p>
           })}
+
           <div>
             <form onSubmit={this.submitCategoryForm.bind(this)}>
               <input ref={(a) => this._inputElement = a} type="text" name="name" />
